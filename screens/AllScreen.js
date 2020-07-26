@@ -1,37 +1,29 @@
 import React, {useState} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Text, View, StyleSheet, KeyboardAvoidingView, Button, Platform, Keyboard,TouchableWithoutFeedback } from 'react-native';
+import { Text, View, StyleSheet, KeyboardAvoidingView, Button, Platform, } from 'react-native';
 import { FlatList, TouchableOpacity, TextInput } from 'react-native-gesture-handler';
 
 import { TODOS } from '../data.js';
+import Item from '../components/Item';
+
 import SingleTodoScreen from './SingleTodoScreen';
+import CompleteScreen from './CompleteScreen';
 
 const AllStack = createStackNavigator();
 const SingleTodoStack = createStackNavigator();
+const CompleteStack = createStackNavigator();
 
-function choiceBackgroundColor(type) {
-  return type === 'Done' ? "#cf1b1b" : "#93b5e1";
-}
 
 function addTodoItem(setData, data, currText, setCurrText) {
   setData([...data, {id: data.length+1, body: currText, status: 'Active'}]);
   setCurrText('');
 }
 
-function Item({ item, navigation, route }){
-  return(
-    <View style={{backgroundColor: choiceBackgroundColor(item.status), paddingVertical: 12, margin: 6, borderRadius: 6,}}>
-      <TouchableOpacity
-        onPress={() => (
-          navigation.navigate('SingleTodo', {
-            item: item,
-          })
-        )}
-      >
-        <Text style={{color: "#fff", textAlign: "center"}}>{`${item.id}: ${item.body}`}</Text>
-      </TouchableOpacity>    
-    </View>
-  )
+function handleStatus(setData, data, item) {
+  let index = data.findIndex( ele => ele === item);
+  let changeItem = {...item, status: item.status === 'Done' ? 'Active' : 'Done'};
+  console.log(changeItem);
+  setData([...data.slice(0,index),changeItem, ...data.slice(index+1)]);
 }
 
 function AllScreen({navigation, route}) {
@@ -58,6 +50,7 @@ function AllScreen({navigation, route}) {
               route={route}
               data={data} 
               setData={setData} 
+              handleStatus={handleStatus}
             />
           }
           keyExtractor={item => `${item.id}`}
@@ -91,6 +84,7 @@ export default function All() {
     <AllStack.Navigator>
       <AllStack.Screen name="All" component={AllScreen} />
       <SingleTodoStack.Screen name="SingleTodo" component={SingleTodoScreen} />
+      <CompleteStack.Screen name="Complete" component={CompleteScreen} />
     </AllStack.Navigator>
   );
 }
