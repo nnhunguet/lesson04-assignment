@@ -17,7 +17,7 @@ function ActiveScreen({navigation, route}) {
       <FlatList
         ListHeaderComponent={
           <View>
-            <Text>{`Todo List(${data.length})`}</Text>
+            <Text style={{textAlign: "center", fontSize: 26, marginVertical: 12, fontWeight: "600" }}>{`Active(${data.length})`}</Text>
           </View>
         }
         data={data}

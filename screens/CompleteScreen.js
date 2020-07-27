@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
+import { createStackNavigator } from '@react-navigation/stack';
 const CompleteStack = createStackNavigator();
-
-import SingleTodoScreen from './SingleTodoScreen';
 const SingleTodoStack = createStackNavigator();
 
-import { TODOS } from '../data.js';
-import Item from '../components/Item';
+import SingleTodoScreen from './SingleTodoScreen';
 
+import Item from '../components/Item';
+import { TODOS } from '../data'
+ 
 function CompleteScreen({navigation, route}) {
   const data = TODOS.filter((item) => item.status === 'Done');
   return (
@@ -17,7 +17,7 @@ function CompleteScreen({navigation, route}) {
       <FlatList
         ListHeaderComponent={
           <View>
-            <Text>{`Todo List(${data.length})`}</Text>
+            <Text style={{textAlign: "center", fontSize: 26, marginVertical: 12, fontWeight: "600" }}>{`Complete(${data.length})`}</Text>
           </View>
         }
         data={data}

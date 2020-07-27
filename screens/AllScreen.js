@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Text, View, StyleSheet, KeyboardAvoidingView, Button, Platform, } from 'react-native';
-import { FlatList, TouchableOpacity, TextInput } from 'react-native-gesture-handler';
+import { FlatList, TextInput } from 'react-native-gesture-handler';
 
 import { TODOS } from '../data.js';
 import Item from '../components/Item';
@@ -11,8 +11,6 @@ import CompleteScreen from './CompleteScreen';
 
 const AllStack = createStackNavigator();
 const SingleTodoStack = createStackNavigator();
-const CompleteStack = createStackNavigator();
-
 
 function addTodoItem(setData, data, currText, setCurrText) {
   setData([...data, {id: data.length+1, body: currText, status: 'Active'}]);
@@ -22,7 +20,6 @@ function addTodoItem(setData, data, currText, setCurrText) {
 function handleStatus(setData, data, item) {
   let index = data.findIndex( ele => ele === item);
   let changeItem = {...item, status: item.status === 'Done' ? 'Active' : 'Done'};
-  console.log(changeItem);
   setData([...data.slice(0,index),changeItem, ...data.slice(index+1)]);
 }
 
@@ -38,7 +35,7 @@ function AllScreen({navigation, route}) {
         <FlatList
           ListHeaderComponent={
             <View>
-              <Text>{`Todo List(${data.length})`}</Text>
+              <Text style={{textAlign: "center", fontSize: 26, marginVertical: 12, fontWeight: "600" }}>{`Todo List(${data.length})`}</Text>
             </View>
           }
           data={data}
@@ -84,7 +81,6 @@ export default function All() {
     <AllStack.Navigator>
       <AllStack.Screen name="All" component={AllScreen} />
       <SingleTodoStack.Screen name="SingleTodo" component={SingleTodoScreen} />
-      <CompleteStack.Screen name="Complete" component={CompleteScreen} />
     </AllStack.Navigator>
   );
 }
